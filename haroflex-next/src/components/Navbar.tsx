@@ -154,33 +154,23 @@ export default function Navbar() {
           </motion.button>
 
           {/* Desktop menü */}
-          <ul className="hidden lg:flex items-center space-x-8">
-            {navItems.map((item, index) => (
-              <motion.li
+          <div className="hidden md:flex items-center space-x-8">
+            {navItems.map((item) => (
+              <Link
                 key={item.id}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                href={item.href}
+                className={`text-sm font-medium transition-colors duration-300 ${
+                  isProductPage || isScrolled
+                    ? activeSection === item.id
+                      ? 'text-green-600'
+                      : 'text-gray-600 hover:text-green-600'
+                    : 'text-white hover:text-gray-200'
+                }`}
               >
-                <Link
-                  href={item.href}
-                  className={`relative text-sm font-medium transition-all duration-300
-                    ${activeSection === item.id 
-                      ? 'text-green-600' 
-                      : isProductPage || isScrolled
-                        ? 'text-gray-800 hover:text-green-600'
-                        : 'text-gray-100 hover:text-white'
-                    }
-                    after:content-[''] after:absolute after:left-0 after:-bottom-2 after:h-0.5 after:bg-green-500
-                    after:transition-all after:duration-300
-                    ${activeSection === item.id ? 'after:w-full' : 'after:w-0 hover:after:w-full'}
-                  `}
-                >
-                  {item.title}
-                </Link>
-              </motion.li>
+                {item.title}
+              </Link>
             ))}
-          </ul>
+          </div>
         </div>
 
         {/* Mobil menü */}
@@ -191,30 +181,23 @@ export default function Navbar() {
               animate="open"
               exit="closed"
               variants={menuVariants}
-              className="fixed inset-0 left-0 top-0 w-full bg-white lg:hidden"
-              style={{ top: '0', marginTop: '0' }}
+              className="fixed inset-0 z-50 bg-white md:hidden"
             >
-              <div className="flex flex-col items-center justify-center h-full">
-                <ul className="flex flex-col items-center space-y-8">
-                  {navItems.map((item, index) => (
-                    <motion.li
-                      key={item.id}
-                      variants={itemVariants}
-                      custom={index}
-                      className="overflow-hidden"
+              <div className="flex flex-col items-center justify-center h-full space-y-8">
+                {navItems.map((item) => (
+                  <motion.div
+                    key={item.id}
+                    variants={itemVariants}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <Link
+                      href={item.href}
+                      className="text-xl font-medium text-gray-800 hover:text-green-600 transition-colors"
                     >
-                      <Link
-                        href={item.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={`block text-3xl font-medium transition-all duration-300 hover:text-green-600
-                          ${activeSection === item.id ? 'text-green-600' : 'text-gray-800'}
-                        `}
-                      >
-                        {item.title}
-                      </Link>
-                    </motion.li>
-                  ))}
-                </ul>
+                      {item.title}
+                    </Link>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           )}

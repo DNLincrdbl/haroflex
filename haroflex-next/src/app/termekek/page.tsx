@@ -530,7 +530,7 @@ export default function Products() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="sticky top-0 z-30 backdrop-blur-lg bg-white/90 shadow-lg"
+          className="sticky top-0 z-30 backdrop-blur-lg bg-white/80 shadow-sm border-b border-gray-200"
         >
           <div className="container mx-auto px-4 py-4">
             <div className="flex flex-col sm:flex-row gap-4 items-center">
@@ -541,24 +541,32 @@ export default function Products() {
                   className={`px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all transform hover:scale-105
                     ${selectedCategory === 'all'
                       ? 'bg-gradient-to-r from-green-600 to-teal-600 text-white shadow-lg shadow-green-500/20'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                 >
                   Összes
                 </button>
-                {Object.keys(groupedProducts).map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all transform hover:scale-105
-                      ${selectedCategory === category
-                        ? 'bg-gradient-to-r from-green-600 to-teal-600 text-white shadow-lg shadow-green-500/20'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }`}
-                  >
-                    {category}
-                  </button>
-                ))}
+                {Object.keys(groupedProducts).map((category) => {
+                  const categoryEmoji = {
+                    'Öntöződobok': '💧',
+                    'Vízágyúk': '🎯',
+                    'KPE Csövek': '🔄'
+                  }[category] || '📦';
+                  
+                  return (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all transform hover:scale-105
+                        ${selectedCategory === category
+                          ? 'bg-gradient-to-r from-green-600 to-teal-600 text-white shadow-lg shadow-green-500/20'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                    >
+                      {categoryEmoji} {category}
+                    </button>
+                  );
+                })}
               </div>
 
               {/* Keresés */}
@@ -568,10 +576,10 @@ export default function Products() {
                   placeholder="Keresés..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full px-6 py-2.5 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                  className="w-full px-6 py-2.5 rounded-full border border-gray-400 text-gray-800 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                 />
                 <svg
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-600"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -636,7 +644,9 @@ export default function Products() {
 
                     {/* Főbb jellemzők */}
                     <div className="space-y-4 mb-6">
-                      <h4 className="text-sm font-semibold text-gray-900">Főbb jellemzők</h4>
+                      <h4 className="text-sm font-semibold text-gray-900">
+                        ✨ Főbb jellemzők
+                      </h4>
                       <ul className="text-sm text-gray-600 space-y-2">
                         {product.features.slice(0, 3).map((feature, index) => (
                           <motion.li
@@ -646,7 +656,7 @@ export default function Products() {
                             transition={{ duration: 0.2, delay: index * 0.1 }}
                             className="flex items-start"
                           >
-                            <span className="text-green-500 mr-2">•</span>
+                            <span className="text-green-500 mr-2">⚡️</span>
                             {feature}
                           </motion.li>
                         ))}
@@ -655,7 +665,9 @@ export default function Products() {
 
                     {/* Technikai adatok */}
                     <div className="space-y-4 mb-6">
-                      <h4 className="text-sm font-semibold text-gray-900">Technikai adatok</h4>
+                      <h4 className="text-sm font-semibold text-gray-900">
+                        🔧 Technikai adatok
+                      </h4>
                       <div className="grid grid-cols-2 gap-3 text-sm">
                         {product.technicalDetails.slice(0, 4).map((detail, index) => (
                           <motion.div
@@ -809,8 +821,9 @@ export default function Products() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.1 }}
-                  className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 pr-8"
+                  className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 pr-8 flex items-center gap-2"
                 >
+                  <span>{selectedProduct.category === 'Öntöződobok' ? '💧' : selectedProduct.category === 'Vízágyúk' ? '🎯' : '🔄'}</span>
                   {selectedProduct.name}
                 </motion.h2>
                 <motion.p 
@@ -858,7 +871,7 @@ export default function Products() {
                   transition={{ duration: 0.3, delay: 0.4 }}
                   className="mb-8"
                 >
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Jellemzők</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">✨ Jellemzők</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {selectedProduct.features.map((feature, index) => (
                       <motion.div
@@ -885,7 +898,7 @@ export default function Products() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.6 }}
                 >
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Technikai adatok</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">🔧 Technikai adatok</h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {selectedProduct.technicalDetails.map((detail, index) => (
                       <motion.div
