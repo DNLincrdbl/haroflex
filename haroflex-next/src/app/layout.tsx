@@ -25,7 +25,7 @@ export default function RootLayout({
         <Footer />
         
         {/* Pályázat logó */}
-        <div className="fixed -bottom-[60px] right-0 z-50 w-[200px] h-[200px] pointer-events-none select-none">
+        <div className="fixed -bottom-[60px] right-0 z-50 w-[200px] h-[200px] pointer-events-none select-none hidden md:block">
           <div 
             className="absolute bottom-0 right-0 w-full h-full"
             style={{

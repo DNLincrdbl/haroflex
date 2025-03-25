@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -441,6 +441,18 @@ export default function Products() {
   const [searchTerm, setSearchTerm] = useState('');
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
 
+  // Görgetés kezelése
+  useEffect(() => {
+    if (selectedProduct || selectedImage) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedProduct, selectedImage]);
+
   // Termékek csoportosítása kategória szerint
   const groupedProducts = products.reduce((acc, product) => {
     if (!acc[product.category]) {
@@ -485,7 +497,7 @@ export default function Products() {
               >
                 <Link 
                   href="/"
-                  className="group mb-8 text-gray-600 hover:text-gray-900 flex items-center transition-all"
+                  className="group mb-8 sm:mb-4 mt-8 sm:mt-0 text-gray-600 hover:text-gray-900 flex items-center transition-all"
                 >
                   <svg className="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -518,7 +530,7 @@ export default function Products() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="sticky top-0 z-30 backdrop-blur-lg bg-white/80 shadow-lg"
+          className="sticky top-0 z-30 backdrop-blur-lg bg-white/90 shadow-lg"
         >
           <div className="container mx-auto px-4 py-4">
             <div className="flex flex-col sm:flex-row gap-4 items-center">
@@ -715,7 +727,7 @@ export default function Products() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg flex items-center justify-center p-4"
+              className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-lg flex items-center justify-center p-4"
               onClick={() => setSelectedImage(null)}
             >
               <motion.div
@@ -765,18 +777,20 @@ export default function Products() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto no-scrollbar"
+              className="fixed inset-0 z-[50] bg-black/80 backdrop-blur-sm overflow-y-auto"
+              onClick={() => setSelectedProduct(null)}
             >
               <motion.div
                 initial={{ scale: 0.9, opacity: 0, y: 20 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.9, opacity: 0, y: 20 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white rounded-3xl max-w-3xl w-full p-8 relative"
+                className="bg-white rounded-3xl w-[95%] max-w-3xl mx-auto my-4 p-4 sm:p-8 relative"
+                onClick={(e) => e.stopPropagation()}
               >
                 <button
                   onClick={() => setSelectedProduct(null)}
-                  className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors"
+                  className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
                 >
                   <motion.svg 
                     xmlns="http://www.w3.org/2000/svg" 
@@ -795,7 +809,7 @@ export default function Products() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.1 }}
-                  className="text-3xl font-bold text-gray-900 mb-4"
+                  className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 pr-8"
                 >
                   {selectedProduct.name}
                 </motion.h2>

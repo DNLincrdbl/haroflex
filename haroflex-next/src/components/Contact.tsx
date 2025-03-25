@@ -64,10 +64,10 @@ export default function Contact() {
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: 0.8 }}
-            className="space-y-8"
+            className="flex flex-col h-full space-y-6"
           >
             {/* Térkép */}
-            <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg">
+            <div className="relative h-[350px] rounded-2xl overflow-hidden shadow-lg">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5518.525889557162!2d19.976920188057516!3d46.24500028209149!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x4128ec5550240614!2sHaroflex%20Kft!5e0!3m2!1shu!2shu!4v1646607555215!5m2!1shu!2shu"
                 className="absolute inset-0 w-full h-full border-0 filter grayscale hover:grayscale-0 transition-all duration-500"
@@ -77,7 +77,7 @@ export default function Contact() {
             </div>
 
             {/* Elérhetőségek */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg space-y-4">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg space-y-4 flex-grow">
               <div className="flex items-center space-x-4 text-gray-600">
                 <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -87,7 +87,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-semibold">Cím</h3>
-                  <p>6725 Szeged, Textilgyári út 3.</p>
+                  <p>Domaszék, Tanya 581, 6781</p>
                 </div>
               </div>
 
@@ -113,8 +113,8 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-semibold">Telefon</h3>
-                  <a href="tel:+36301234567" className="hover:text-green-600 transition-colors">
-                    +36 30 123 4567
+                  <a href="tel:+36703804507" className="hover:text-green-600 transition-colors">
+                    +36 70 380 4507
                   </a>
                 </div>
               </div>
@@ -126,11 +126,11 @@ export default function Contact() {
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 0.8 }}
-            className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg"
+            className="bg-white/80 backdrop-blur-sm rounded-2xl p-10 shadow-lg h-full flex items-center"
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-md mx-auto">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                   Név
                 </label>
                 <input
@@ -140,13 +140,13 @@ export default function Contact() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 bg-white/50"
                   placeholder="Az Ön neve"
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                   Email
                 </label>
                 <input
@@ -156,13 +156,13 @@ export default function Contact() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 bg-white/50"
                   placeholder="pelda@email.com"
                 />
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
                   Telefonszám
                 </label>
                 <input
@@ -171,13 +171,13 @@ export default function Contact() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 bg-white/50"
                   placeholder="+36 30 123 4567"
                 />
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
                   Üzenet
                 </label>
                 <textarea
@@ -187,7 +187,7 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   rows={4}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 resize-none"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 resize-none bg-white/50"
                   placeholder="Írja le üzenetét..."
                 />
               </div>
@@ -198,7 +198,7 @@ export default function Contact() {
                 className={`w-full py-4 px-6 rounded-xl text-white font-medium transition-all duration-300
                   ${isSubmitting 
                     ? 'bg-gray-400 cursor-not-allowed' 
-                    : 'bg-gradient-to-r from-green-600 to-teal-600 hover:shadow-lg hover:scale-[1.02]'
+                    : 'bg-gradient-to-r from-green-600 to-teal-600 hover:shadow-lg hover:-translate-y-0.5'
                   }`}
               >
                 {isSubmitting ? (

@@ -27,16 +27,12 @@ export default function Footer() {
               transition={{ duration: 0.8 }}
             >
               <Link href="/" className="inline-block">
-                <Image
-                  src="/logo.png"
-                  alt="Haroflex Logo"
-                  width={150}
-                  height={50}
-                  className="h-12 w-auto"
-                />
+                <span className="text-2xl font-semibold text-gray-900">
+                  Haroflex
+                </span>
               </Link>
               <p className="mt-4 text-gray-600 text-sm leading-relaxed">
-                A Haroflex Kft. több mint 25 éves tapasztalattal rendelkezik a TURBOJET öntöződobok gyártásában. 
+                A Haroflex Kft. több mint 10 éves tapasztalattal rendelkezik a TURBOJET öntöződobok gyártásában. 
                 Minőségi termékeinkkel és szolgáltatásainkkal állunk partnereink rendelkezésére.
               </p>
             </motion.div>
@@ -108,7 +104,7 @@ export default function Footer() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                6725 Szeged, Textilgyári út 3.
+                Domaszék, Tanya 581, 6781
               </p>
               <p className="flex items-center text-gray-600">
                 <svg className="w-5 h-5 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">

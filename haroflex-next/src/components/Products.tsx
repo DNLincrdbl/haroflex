@@ -36,12 +36,15 @@ export default function Products() {
     <section 
       id="products" 
       ref={containerRef}
-      className="relative py-22 sm:py-32 overflow-hidden bg-gradient-to-b from-white to-gray-50"
+      className="relative py-22 sm:py-32 overflow-hidden"
     >
       {/* Háttér dekoráció */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_#4ADE8020,_transparent_70%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_#2DD4BF20,_transparent_70%)]"></div>
+        {/* Fő háttér átmenet */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#00321A]/15 via-[#00321A]/3 to-white" />
+        {/* Dekoratív elemek halványabban */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_#4ADE8008,_transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_#2DD4BF08,_transparent_70%)]" />
       </div>
 
       <div className="container relative z-10 mx-auto px-4 sm:px-6">

@@ -32,9 +32,9 @@ export default function Hero() {
       {/* Tartalom */}
       <div className="relative z-10 h-full flex flex-col items-center text-white text-center px-4">
         {/* Központi tartalom */}
-        <div className="w-full max-w-4xl mx-auto mt-24 md:mt-28">
+        <div className="w-full max-w-4xl mx-auto md:mt-28 flex md:block flex-1 flex-col justify-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
-            HAROFLEX
+            TURBOJET
           </h1>
           <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto mb-8 animate-fade-in-delay px-4 leading-relaxed">
             Cégünk által tervezett, fejlesztett, és gyártott TURBOJET márkanév alatt futó öntöződobok, amelyekkel igyekszünk ügyfeleink számára a legkézenfekvőbb megoldásokat nyújtani a mezőgazdasági öntözésben.
