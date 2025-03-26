@@ -6,26 +6,46 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 // Termék típus definíció
-type Product = {
-  id: string;
-  name: string;
-  category: string;
-  description: string;
-  features: string[];
+type ProductVariant = {
+  hoseLength: number;
+  hasRotatingBase?: boolean;
+  images: string[];
   technicalDetails: {
     label: string;
     value: string;
   }[];
-  images: string[];
+};
+
+type Product = {
+  id: string;
+  name: string;
+  category: string;
+  modelSize?: number;
+  description: string;
+  features: string[];
+  variants?: ProductVariant[];
+  // For non-variant products (like vízágyúk)
+  technicalDetails?: {
+    label: string;
+    value: string;
+  }[];
+  images?: string[];
+};
+
+// Módosítsuk a selectedVariants típusát
+type SelectedVariant = {
+  hoseLength: number;
+  hasRotatingBase: boolean;
 };
 
 // Termékek adatai
 const products: Product[] = [
   {
-    id: 'turbojet-90-400',
-    name: 'TURBOJET 90/400',
+    id: 'turbojet-90',
+    name: 'TURBOJET 90',
     category: 'Öntöződobok',
-    description: 'Nagy teljesítményű öntöződob 90mm átmérőjű és 400m hosszú tömlővel. Ideális nagyobb területek hatékony öntözéséhez.',
+    modelSize: 90,
+    description: 'Nagy teljesítményű öntöződob 90mm átmérőjű tömlővel. Ideális nagyobb területek hatékony öntözéséhez.',
     features: [
       'Automatikus visszatekerés',
       'Állítható sebesség',
@@ -43,51 +63,37 @@ const products: Product[] = [
       'Állítható nyomtáv a vízágyú kocsin és a dobkocsin is',
       'Hidraulikus letalpaló rendszer'
     ],
-    technicalDetails: [
-      { label: 'Tömlő átmérő', value: '90 mm' },
-      { label: 'Tömlő hossz', value: '400 m' },
-      { label: 'Max. nyomás', value: '12 bar' },
-      { label: 'Öntözési szélesség', value: 'max. 90 m' },
-      { label: 'Vízhozam', value: '50-120 m³/h' },
-      { label: 'Tömlő falvastagság', value: '9.5 mm' }
-    ],
-    images: ['/images/turbojet90_400.jpg', '/images/turbojet90_400.jpg']
+    variants: [
+      {
+        hoseLength: 400,
+        images: ['/images/turbojet90_400.jpg', '/images/turbojet90_400.jpg'],
+        technicalDetails: [
+          { label: 'Tömlő hossz', value: '400 m' },
+          { label: 'Max. nyomás', value: '12 bar' },
+          { label: 'Öntözési szélesség', value: 'max. 90 m' },
+          { label: 'Vízhozam', value: '50-120 m³/h' },
+          { label: 'Tömlő falvastagság', value: '9.5 mm' }
+        ]
+      },
+      {
+        hoseLength: 350,
+        images: ['/images/turbojet90_350.jpg', '/images/turbojet90_350.jpg'],
+        technicalDetails: [
+          { label: 'Tömlő hossz', value: '350 m' },
+          { label: 'Max. nyomás', value: '10 bar' },
+          { label: 'Öntözési szélesség', value: 'max. 120 m' },
+          { label: 'Vízhozam', value: '50-120 m³/h' },
+          { label: 'Tömlő falvastagság', value: '9.5 mm' }
+        ]
+      }
+    ]
   },
   {
-    id: 'turbojet-90-350',
-    name: 'TURBOJET 90/350',
+    id: 'turbojet-75',
+    name: 'TURBOJET 75',
     category: 'Öntöződobok',
-    description: 'Nagy teljesítményű öntöződob 90mm átmérőjű és 350m hosszú tömlővel. Kiváló választás nagyobb gazdaságok számára.',
-    features: [
-      'Automatikus visszatekerés',
-      'Állítható sebesség',
-      'Beépített nyomásmérő',
-      'Rozsdamentes acél alkatrészek',
-      'Forgózsámolyos dob elforgatás',
-      'Gyors öntözési funkció (kb. 1h/100m)',
-      'Állandó sebességű tömlőbevontatás',
-      'Nagy teherbírású fúvott gumiköpenyek',
-      'Hajtóműbe integrált vízturbina (COMET)',
-      '6 bordás kardáncsonk a gépi becsévéléshez',
-      'Négy fokozatú tömlőbevontatás+bypass funkció',
-      'Állítható nyomtáv a vízágyú kocsin és a dobkocsin is',
-      'Hidraulikus letalpaló rendszer'
-    ],
-    technicalDetails: [
-      { label: 'Tömlő átmérő', value: '90 mm' },
-      { label: 'Tömlő hossz', value: '350 m' },
-      { label: 'Max. nyomás', value: '10 bar' },
-      { label: 'Öntözési szélesség', value: 'max. 120 m' },
-      { label: 'Vízhozam', value: '50-120 m³/h' },
-      { label: 'Tömlő falvastagság', value: '9.5 mm' }
-    ],
-    images: ['/images/turbojet90_350.jpg', '/images/turbojet90_350.jpg']
-  },
-  {
-    id: 'turbojet-75-350',
-    name: 'TURBOJET 75/350',
-    category: 'Öntöződobok',
-    description: 'Közepes méretű öntöződob 75mm átmérőjű és 350m hosszú tömlővel. Tökéletes választás közepes méretű területek öntözéséhez.',
+    modelSize: 75,
+    description: 'Közepes méretű öntöződob 75mm átmérőjű tömlővel. Tökéletes választás közepes méretű területek öntözéséhez.',
     features: [
       'Kompakt kialakítás',
       'Egyszerű kezelhetőség',
@@ -102,50 +108,37 @@ const products: Product[] = [
       '6 bordás kardáncsonk a gépi becsévéléshez',
       'Extra vastag KPE tömlő'
     ],
-    technicalDetails: [
-      { label: 'Tömlő átmérő', value: '75 mm' },
-      { label: 'Tömlő hossz', value: '350 m' },
-      { label: 'Max. nyomás', value: '10 bar' },
-      { label: 'Öntözési szélesség', value: 'max. 70 m' },
-      { label: 'Vízhozam', value: '30-90 m³/h' },
-      { label: 'Tömlő falvastagság', value: '7.5 mm' }
-    ],
-    images: ['/images/turbojet75_350.jpg', '/images/turbojet75_350.jpg']
+    variants: [
+      {
+        hoseLength: 350,
+        images: ['/images/turbojet75_350.jpg', '/images/turbojet75_350.jpg'],
+        technicalDetails: [
+          { label: 'Tömlő hossz', value: '350 m' },
+          { label: 'Max. nyomás', value: '10 bar' },
+          { label: 'Öntözési szélesség', value: 'max. 70 m' },
+          { label: 'Vízhozam', value: '30-90 m³/h' },
+          { label: 'Tömlő falvastagság', value: '7.5 mm' }
+        ]
+      },
+      {
+        hoseLength: 300,
+        images: ['/images/turbojet75_300.jpg', '/images/turbojet75_300.jpg'],
+        technicalDetails: [
+          { label: 'Tömlő hossz', value: '300 m' },
+          { label: 'Max. nyomás', value: '10 bar' },
+          { label: 'Öntözési szélesség', value: 'max. 70 m' },
+          { label: 'Vízhozam', value: '30-90 m³/h' },
+          { label: 'Tömlő falvastagság', value: '7.5 mm' }
+        ]
+      }
+    ]
   },
   {
-    id: 'turbojet-75-300',
-    name: 'TURBOJET 75/300',
+    id: 'turbojet-63',
+    name: 'TURBOJET 63',
     category: 'Öntöződobok',
-    description: 'Közepes méretű öntöződob 75mm átmérőjű és 300m hosszú tömlővel. Ideális választás közepes területek öntözéséhez.',
-    features: [
-      'Kompakt kialakítás',
-      'Egyszerű kezelhetőség',
-      'Beépített nyomásmérő',
-      'Állítható sebesség',
-      'Automata leállítás',
-      'Forgózsámolyos dob elforgatás',
-      'Gyors öntözési funkció',
-      'Állandó sebességű tömlőbevontatás',
-      'Nagy teherbírású fúvott gumiköpenyek',
-      'Hajtóműbe integrált vízturbina (COMET)',
-      '6 bordás kardáncsonk a gépi becsévéléshez',
-      'Extra vastag KPE tömlő'
-    ],
-    technicalDetails: [
-      { label: 'Tömlő átmérő', value: '75 mm' },
-      { label: 'Tömlő hossz', value: '300 m' },
-      { label: 'Max. nyomás', value: '10 bar' },
-      { label: 'Öntözési szélesség', value: 'max. 70 m' },
-      { label: 'Vízhozam', value: '30-90 m³/h' },
-      { label: 'Tömlő falvastagság', value: '7.5 mm' }
-    ],
-    images: ['/images/turbojet75_300.jpg', '/images/turbojet75_300.jpg']
-  },
-  {
-    id: 'turbojet-63-330',
-    name: 'TURBOJET 63/330',
-    category: 'Öntöződobok',
-    description: 'Kompakt öntöződob 63mm átmérőjű és 330m hosszú tömlővel, ideális kisebb és közepes területekhez.',
+    modelSize: 63,
+    description: 'Kompakt öntöződob 63mm átmérőjű tömlővel, ideális kisebb és közepes területekhez.',
     features: [
       '3 kerekű vízágyú kocsi',
       '3 fokozatú tömlőbevontatás',
@@ -159,49 +152,37 @@ const products: Product[] = [
       '6 bordás kardáncsonk',
       'Egyenletes sebességű tömlőbevontatás'
     ],
-    technicalDetails: [
-      { label: 'Tömlő átmérő', value: '63 mm' },
-      { label: 'Tömlő hossz', value: '330 m' },
-      { label: 'Max. nyomás', value: '10 bar' },
-      { label: 'Öntözési szélesség', value: 'max. 80 m' },
-      { label: 'Vízhozam', value: '25-70 m³/h' },
-      { label: 'Tömlő falvastagság', value: '7 mm' }
-    ],
-    images: ['/images/turbojet63_330.jpg', '/images/turbojet63_330.jpg']
+    variants: [
+      {
+        hoseLength: 330,
+        images: ['/images/turbojet63_330.jpg', '/images/turbojet63_330.jpg'],
+        technicalDetails: [
+          { label: 'Tömlő hossz', value: '330 m' },
+          { label: 'Max. nyomás', value: '10 bar' },
+          { label: 'Öntözési szélesség', value: 'max. 80 m' },
+          { label: 'Vízhozam', value: '25-70 m³/h' },
+          { label: 'Tömlő falvastagság', value: '7 mm' }
+        ]
+      },
+      {
+        hoseLength: 300,
+        images: ['/images/turbojet63_300.jpg', '/images/turbojet63_300.jpg'],
+        technicalDetails: [
+          { label: 'Tömlő hossz', value: '300 m' },
+          { label: 'Max. nyomás', value: '10 bar' },
+          { label: 'Öntözési szélesség', value: 'max. 80 m' },
+          { label: 'Vízhozam', value: '25-70 m³/h' },
+          { label: 'Tömlő falvastagság', value: '7 mm' }
+        ]
+      }
+    ]
   },
   {
-    id: 'turbojet-63-300',
-    name: 'TURBOJET 63/300',
+    id: 'turbojet-50',
+    name: 'TURBOJET 50',
     category: 'Öntöződobok',
-    description: 'Kompakt öntöződob 63mm átmérőjű és 300m hosszú tömlővel, ideális kisebb területekhez.',
-    features: [
-      '3 kerekű vízágyú kocsi',
-      '3 fokozatú tömlőbevontatás',
-      'Bevontatás végállás kapcsoló',
-      'Le-fel hajtható támasztólábak',
-      'Alumínium vízturbina ház+rotor',
-      'Gyors öntözés funkció',
-      'Állítható magasságú letalpaló támasz',
-      'Extra vastag KPE tömlő',
-      'Forgózsámolyos dob elforgatás',
-      '6 bordás kardáncsonk',
-      'Egyenletes sebességű tömlőbevontatás'
-    ],
-    technicalDetails: [
-      { label: 'Tömlő átmérő', value: '63 mm' },
-      { label: 'Tömlő hossz', value: '300 m' },
-      { label: 'Max. nyomás', value: '10 bar' },
-      { label: 'Öntözési szélesség', value: 'max. 80 m' },
-      { label: 'Vízhozam', value: '25-70 m³/h' },
-      { label: 'Tömlő falvastagság', value: '7 mm' }
-    ],
-    images: ['/images/turbojet63_300.jpg', '/images/turbojet63_300.jpg']
-  },
-  {
-    id: 'turbojet-50-240',
-    name: 'TURBOJET 50/240',
-    category: 'Öntöződobok',
-    description: 'Kisméretű öntöződob 50mm átmérőjű és 240m hosszú tömlővel, tökéletes kisebb területek öntözéséhez.',
+    modelSize: 50,
+    description: 'Kisméretű öntöződob 50mm átmérőjű tömlővel, tökéletes kisebb területek öntözéséhez.',
     features: [
       '3 fokozatú tömlőbevontatás',
       'Vízágyú típusa: JET szektoros',
@@ -212,40 +193,56 @@ const products: Product[] = [
       'Alacsony üzemi nyomástól működő rendszer',
       'Forgózsámolyos dob elforgatás (opcionális)'
     ],
-    technicalDetails: [
-      { label: 'Tömlő átmérő', value: '50 mm' },
-      { label: 'Tömlő hossz', value: '240 m' },
-      { label: 'Max. nyomás', value: '10 bar' },
-      { label: 'Öntözési szélesség', value: 'max. 55 m' },
-      { label: 'Vízhozam', value: '15-40 m³/h' },
-      { label: 'Tömlő falvastagság', value: '5 mm' }
-    ],
-    images: ['/images/turbojet50_240.jpg', '/images/turbojet50_240-forg.jpg']
-  },
-  {
-    id: 'turbojet-50-200',
-    name: 'TURBOJET 50/200',
-    category: 'Öntöződobok',
-    description: 'Kisméretű öntöződob 50mm átmérőjű és 200m hosszú tömlővel, ideális kisebb területek öntözéséhez.',
-    features: [
-      '3 fokozatú tömlőbevontatás',
-      'Vízágyú típusa: JET szektoros',
-      'Bevontatás végállás kapcsoló',
-      'Alumínium vízturbina ház+rotor',
-      'Gyors öntözés funkció',
-      'Extra vastag KPE tömlő',
-      'Alacsony üzemi nyomástól működő rendszer',
-      'Forgózsámolyos dob elforgatás (opcionális)'
-    ],
-    technicalDetails: [
-      { label: 'Tömlő átmérő', value: '50 mm' },
-      { label: 'Tömlő hossz', value: '200 m' },
-      { label: 'Max. nyomás', value: '10 bar' },
-      { label: 'Öntözési szélesség', value: 'max. 55 m' },
-      { label: 'Vízhozam', value: '15-40 m³/h' },
-      { label: 'Tömlő falvastagság', value: '5 mm' }
-    ],
-    images: ['/images/turbojet50_200.jpg', '/images/turbojet50_200-forg.jpg']
+    variants: [
+      {
+        hoseLength: 240,
+        hasRotatingBase: false,
+        images: ['/images/turbojet50_240.jpg', '/images/turbojet50_240.jpg'],
+        technicalDetails: [
+          { label: 'Tömlő hossz', value: '240 m' },
+          { label: 'Max. nyomás', value: '10 bar' },
+          { label: 'Öntözési szélesség', value: 'max. 55 m' },
+          { label: 'Vízhozam', value: '15-40 m³/h' },
+          { label: 'Tömlő falvastagság', value: '5 mm' }
+        ]
+      },
+      {
+        hoseLength: 240,
+        hasRotatingBase: true,
+        images: ['/images/P1050131.JPG', '/images/P1050133.JPG', '/images/P1050137.JPG'],
+        technicalDetails: [
+          { label: 'Tömlő hossz', value: '240 m' },
+          { label: 'Max. nyomás', value: '10 bar' },
+          { label: 'Öntözési szélesség', value: 'max. 55 m' },
+          { label: 'Vízhozam', value: '15-40 m³/h' },
+          { label: 'Tömlő falvastagság', value: '5 mm' }
+        ]
+      },
+      {
+        hoseLength: 200,
+        hasRotatingBase: false,
+        images: ['/images/turbojet50_200.jpg', '/images/turbojet50_200.jpg'],
+        technicalDetails: [
+          { label: 'Tömlő hossz', value: '200 m' },
+          { label: 'Max. nyomás', value: '10 bar' },
+          { label: 'Öntözési szélesség', value: 'max. 55 m' },
+          { label: 'Vízhozam', value: '15-40 m³/h' },
+          { label: 'Tömlő falvastagság', value: '5 mm' }
+        ]
+      },
+      {
+        hoseLength: 200,
+        hasRotatingBase: true,
+        images: ['/images/P1050131.JPG', '/images/P1050133.JPG', '/images/P1050137.JPG'],
+        technicalDetails: [
+          { label: 'Tömlő hossz', value: '200 m' },
+          { label: 'Max. nyomás', value: '10 bar' },
+          { label: 'Öntözési szélesség', value: 'max. 55 m' },
+          { label: 'Vízhozam', value: '15-40 m³/h' },
+          { label: 'Tömlő falvastagság', value: '5 mm' }
+        ]
+      }
+    ]
   },
   {
     id: 'jet-65',
@@ -440,6 +437,8 @@ export default function Products() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
+  const [selectedVariants, setSelectedVariants] = useState<Record<string, SelectedVariant>>({});
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
   // Görgetés kezelése
   useEffect(() => {
@@ -471,6 +470,15 @@ export default function Products() {
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     product.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Képek kezelése
+  const handleImageNavigation = (direction: 'prev' | 'next', images: string[]) => {
+    if (direction === 'prev') {
+      setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+    } else {
+      setCurrentImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+    }
+  };
 
   return (
     <>
@@ -615,10 +623,24 @@ export default function Products() {
                   {/* Termék kép */}
                   <div 
                     className="relative h-56 overflow-hidden cursor-pointer"
-                    onClick={() => setSelectedImage(product.images[0])}
+                    onClick={() => {
+                      const selectedVariant = product.variants?.find(v => 
+                        v.hoseLength === selectedVariants[product.id]?.hoseLength && 
+                        v.hasRotatingBase === selectedVariants[product.id]?.hasRotatingBase
+                      );
+                      const images = selectedVariant?.images || product.variants?.[0].images || product.images;
+                      if (images && images.length > 0) {
+                        setSelectedImage(images[0]);
+                      }
+                    }}
                   >
                     <Image
-                      src={product.images[0]}
+                      src={
+                        (product.variants?.find(v => 
+                          v.hoseLength === selectedVariants[product.id]?.hoseLength && 
+                          v.hasRotatingBase === selectedVariants[product.id]?.hasRotatingBase
+                        )?.images || product.variants?.[0].images || product.images)?.[0] || ''
+                      }
                       alt={product.name}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -669,7 +691,7 @@ export default function Products() {
                         🔧 Technikai adatok
                       </h4>
                       <div className="grid grid-cols-2 gap-3 text-sm">
-                        {product.technicalDetails.slice(0, 4).map((detail, index) => (
+                        {(product.variants ? product.variants[0].technicalDetails : product.technicalDetails)?.slice(0, 4).map((detail, index) => (
                           <motion.div
                             key={index}
                             initial={false}
@@ -686,6 +708,69 @@ export default function Products() {
                         ))}
                       </div>
                     </div>
+
+                    {/* Tömlőhossz választó öntöződobokhoz */}
+                    {product.variants && (
+                      <div className="space-y-4 mb-6">
+                        <h4 className="text-sm font-semibold text-gray-900">
+                          📏 Választható tömlőhosszak
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                          {Array.from(new Set(product.variants?.map(v => v.hoseLength) || [])).map(hoseLength => {
+                            const variants = product.variants?.filter(v => v.hoseLength === hoseLength) || [];
+                            const isSelected = selectedVariants[product.id]?.hoseLength === hoseLength;
+                            return (
+                              <div key={hoseLength} className="flex flex-col gap-2">
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    const variant = variants.find(v => !v.hasRotatingBase) || variants[0];
+                                    setSelectedVariants({
+                                      ...selectedVariants,
+                                      [product.id]: {
+                                        hoseLength: variant.hoseLength,
+                                        hasRotatingBase: variant.hasRotatingBase || false
+                                      }
+                                    });
+                                  }}
+                                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all
+                                    ${isSelected && !selectedVariants[product.id]?.hasRotatingBase
+                                      ? 'bg-green-100 text-green-700 ring-2 ring-green-500'
+                                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    }`}
+                                >
+                                  {hoseLength}m
+                                </button>
+                                {variants.some(v => v.hasRotatingBase) && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      const variant = variants.find(v => v.hasRotatingBase);
+                                      if (variant) {
+                                        setSelectedVariants({
+                                          ...selectedVariants,
+                                          [product.id]: {
+                                            hoseLength: variant.hoseLength,
+                                            hasRotatingBase: true
+                                          }
+                                        });
+                                      }
+                                    }}
+                                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all
+                                      ${isSelected && selectedVariants[product.id]?.hasRotatingBase
+                                        ? 'bg-green-100 text-green-700 ring-2 ring-green-500'
+                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                      }`}
+                                  >
+                                    {hoseLength}m (forgózsámolyos)
+                                  </button>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
 
                     {/* Részletek gomb */}
                     <motion.button
@@ -748,6 +833,7 @@ export default function Products() {
                 exit={{ scale: 0.9, opacity: 0 }}
                 transition={{ duration: 0.3 }}
                 className="relative w-full max-w-5xl h-[80vh]"
+                onClick={(e) => e.stopPropagation()}
               >
                 <Image
                   src={selectedImage}
@@ -757,10 +843,52 @@ export default function Products() {
                   priority
                   className="object-contain"
                 />
+                
+                {/* Navigációs gombok */}
+                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between items-center px-4">
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="bg-white/10 hover:bg-white/20 rounded-full p-2 backdrop-blur-sm text-white transition-all"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const images = selectedProduct?.variants 
+                        ? selectedProduct.variants[0].images 
+                        : selectedProduct?.images || [];
+                      handleImageNavigation('prev', images);
+                      setSelectedImage(images[currentImageIndex]);
+                    }}
+                  >
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </motion.button>
+                  
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="bg-white/10 hover:bg-white/20 rounded-full p-2 backdrop-blur-sm text-white transition-all"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const images = selectedProduct?.variants 
+                        ? selectedProduct.variants[0].images 
+                        : selectedProduct?.images || [];
+                      handleImageNavigation('next', images);
+                      setSelectedImage(images[currentImageIndex]);
+                    }}
+                  >
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </motion.button>
+                </div>
+
+                {/* Bezárás gomb */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedImage(null);
+                    setCurrentImageIndex(0);
                   }}
                   className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
                 >
@@ -842,7 +970,10 @@ export default function Products() {
                   transition={{ duration: 0.3, delay: 0.3 }}
                   className="grid grid-cols-2 gap-6 mb-8"
                 >
-                  {selectedProduct.images.map((image, index) => (
+                  {(selectedProduct.variants?.find(v => 
+                    v.hoseLength === selectedVariants[selectedProduct.id]?.hoseLength && 
+                    v.hasRotatingBase === selectedVariants[selectedProduct.id]?.hasRotatingBase
+                  )?.images || selectedProduct.variants?.[0].images || selectedProduct.images)?.map((image, index) => (
                     <div
                       key={index}
                       className="relative h-48 rounded-2xl overflow-hidden cursor-pointer group"
@@ -892,28 +1023,82 @@ export default function Products() {
                   </div>
                 </motion.div>
 
-                {/* Technikai adatok */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.6 }}
-                >
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">🔧 Technikai adatok</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {selectedProduct.technicalDetails.map((detail, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: 0.7 + index * 0.1 }}
-                        className="bg-gray-50 rounded-xl p-4"
-                      >
-                        <span className="text-gray-500 text-sm block mb-1">{detail.label}</span>
-                        <span className="text-gray-900 font-medium">{detail.value}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
+                {/* Tömlőhossz választó */}
+                {selectedProduct.variants && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.5 }}
+                    className="mb-8"
+                  >
+                    <h3 className="text-xl font-semibold text-gray-900 mb-4">📏 Tömlőhossz választó</h3>
+                    <div className="flex flex-wrap gap-3">
+                      {selectedProduct.variants.map((variant) => {
+                        const isSelected = selectedVariants[selectedProduct.id]?.hoseLength === variant.hoseLength && 
+                          selectedVariants[selectedProduct.id]?.hasRotatingBase === variant.hasRotatingBase;
+                        return (
+                          <motion.button
+                            key={`${variant.hoseLength}-${variant.hasRotatingBase ? 'rotating' : 'standard'}`}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => {
+                              setSelectedVariants({
+                                ...selectedVariants,
+                                [selectedProduct.id]: {
+                                  hoseLength: variant.hoseLength,
+                                  hasRotatingBase: variant.hasRotatingBase || false
+                                }
+                              });
+                            }}
+                            className={`px-4 py-2 rounded-xl text-sm font-medium transition-all
+                              ${isSelected
+                                ? 'bg-gradient-to-r from-green-600 to-teal-600 text-white shadow-lg shadow-green-500/20'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                              }`}
+                          >
+                            {variant.hoseLength}m
+                            {variant.hasRotatingBase && ' (forgózsámolyos)'}
+                          </motion.button>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Módosítsuk a technikai adatok megjelenítését a modalban is */}
+                {(selectedProduct?.variants 
+                  ? selectedProduct.variants.find(v => 
+                      v.hoseLength === selectedVariants[selectedProduct.id]?.hoseLength && 
+                      v.hasRotatingBase === selectedVariants[selectedProduct.id]?.hasRotatingBase
+                    ) || selectedProduct.variants[0]
+                  : selectedProduct
+                ).technicalDetails?.map((detail, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.7 + index * 0.1 }}
+                    className={`bg-gray-50 rounded-xl p-4 ${detail.label === 'Tömlő hossz' ? 'cursor-pointer hover:bg-green-100' : ''}`}
+                    onClick={() => {
+                      if (detail.label === 'Tömlő hossz' && selectedProduct.variants) {
+                        const hoseLength = parseInt(detail.value);
+                        const variant = selectedProduct.variants.find(v => v.hoseLength === hoseLength);
+                        if (variant) {
+                          setSelectedVariants({
+                            ...selectedVariants,
+                            [selectedProduct.id]: {
+                              hoseLength: variant.hoseLength,
+                              hasRotatingBase: variant.hasRotatingBase || false
+                            }
+                          });
+                        }
+                      }
+                    }}
+                  >
+                    <span className="text-gray-500 text-sm block mb-1">{detail.label}</span>
+                    <span className="text-gray-900 font-medium">{detail.value}</span>
+                  </motion.div>
+                ))}
               </motion.div>
             </motion.div>
           )}
