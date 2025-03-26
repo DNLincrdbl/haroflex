@@ -110,6 +110,17 @@ const products: Product[] = [
     ],
     variants: [
       {
+        hoseLength: 400,
+        images: ['/images/turbojet75_300.jpg', '/images/turbojet75_350.jpg'],
+        technicalDetails: [
+          { label: 'Tömlő hossz', value: '400 m' },
+          { label: 'Max. nyomás', value: '10 bar' },
+          { label: 'Öntözési szélesség', value: 'max. 70 m' },
+          { label: 'Vízhozam', value: '30-90 m³/h' },
+          { label: 'Tömlő falvastagság', value: '7.5 mm' }
+        ]
+      },
+      {
         hoseLength: 350,
         images: ['/images/turbojet75_350.jpg', '/images/turbojet75_350.jpg'],
         technicalDetails: [
@@ -190,8 +201,7 @@ const products: Product[] = [
       'Alumínium vízturbina ház+rotor',
       'Gyors öntözés funkció',
       'Extra vastag KPE tömlő',
-      'Alacsony üzemi nyomástól működő rendszer',
-      'Forgózsámolyos dob elforgatás (opcionális)'
+      'Alacsony üzemi nyomástól működő rendszer'
     ],
     variants: [
       {
@@ -207,23 +217,42 @@ const products: Product[] = [
         ]
       },
       {
-        hoseLength: 240,
-        hasRotatingBase: true,
-        images: ['/images/P1050131.JPG', '/images/P1050133.JPG', '/images/P1050137.JPG'],
-        technicalDetails: [
-          { label: 'Tömlő hossz', value: '240 m' },
-          { label: 'Max. nyomás', value: '10 bar' },
-          { label: 'Öntözési szélesség', value: 'max. 55 m' },
-          { label: 'Vízhozam', value: '15-40 m³/h' },
-          { label: 'Tömlő falvastagság', value: '5 mm' }
-        ]
-      },
-      {
         hoseLength: 200,
         hasRotatingBase: false,
         images: ['/images/turbojet50_200.jpg', '/images/turbojet50_200.jpg'],
         technicalDetails: [
           { label: 'Tömlő hossz', value: '200 m' },
+          { label: 'Max. nyomás', value: '10 bar' },
+          { label: 'Öntözési szélesség', value: 'max. 55 m' },
+          { label: 'Vízhozam', value: '15-40 m³/h' },
+          { label: 'Tömlő falvastagság', value: '5 mm' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'turbojet-50-rotating',
+    name: 'TURBOJET 50 (Forgózsámolyos)',
+    category: 'Öntöződobok',
+    modelSize: 50,
+    description: 'Kisméretű öntöződob 50mm átmérőjű tömlővel, forgózsámolyos kivitelben. Tökéletes kisebb területek öntözéséhez.',
+    features: [
+      '3 fokozatú tömlőbevontatás',
+      'Vízágyú típusa: JET szektoros',
+      'Bevontatás végállás kapcsoló',
+      'Alumínium vízturbina ház+rotor',
+      'Gyors öntözés funkció',
+      'Extra vastag KPE tömlő',
+      'Alacsony üzemi nyomástól működő rendszer',
+      'Forgózsámolyos dob elforgatás'
+    ],
+    variants: [
+      {
+        hoseLength: 240,
+        hasRotatingBase: true,
+        images: ['/images/P1050131.JPG', '/images/P1050133.JPG', '/images/P1050137.JPG'],
+        technicalDetails: [
+          { label: 'Tömlő hossz', value: '240 m' },
           { label: 'Max. nyomás', value: '10 bar' },
           { label: 'Öntözési szélesség', value: 'max. 55 m' },
           { label: 'Vízhozam', value: '15-40 m³/h' },
@@ -347,7 +376,7 @@ const products: Product[] = [
       { label: 'Csatlakozó méret', value: '1.5"' },
       { label: 'Fúvókák', value: '8-14 mm' }
     ],
-    images: ['/images/b30.jpg', '/images/b30-2.jpg']
+    images: ['/images/b30.jpg', '/images/b30-2.jpg', '/images/b30-3.jpg', '/images/b30-4.jpg']
   },
   {
     id: 'kpe-90',
@@ -716,58 +745,85 @@ export default function Products() {
                           📏 Választható tömlőhosszak
                         </h4>
                         <div className="flex flex-wrap gap-2">
-                          {Array.from(new Set(product.variants?.map(v => v.hoseLength) || [])).map(hoseLength => {
-                            const variants = product.variants?.filter(v => v.hoseLength === hoseLength) || [];
-                            const isSelected = selectedVariants[product.id]?.hoseLength === hoseLength;
-                            return (
-                              <div key={hoseLength} className="flex flex-col gap-2">
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    const variant = variants.find(v => !v.hasRotatingBase) || variants[0];
-                                    setSelectedVariants({
-                                      ...selectedVariants,
-                                      [product.id]: {
-                                        hoseLength: variant.hoseLength,
-                                        hasRotatingBase: variant.hasRotatingBase || false
-                                      }
-                                    });
-                                  }}
-                                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all
-                                    ${isSelected && !selectedVariants[product.id]?.hasRotatingBase
-                                      ? 'bg-green-100 text-green-700 ring-2 ring-green-500'
-                                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                    }`}
-                                >
-                                  {hoseLength}m
-                                </button>
-                                {variants.some(v => v.hasRotatingBase) && (
+                          {product.id === 'turbojet-50-rotating' ? (
+                            // Forgózsámolyos verzió - egyszerű gombok
+                            product.variants.map((variant) => (
+                              <button
+                                key={variant.hoseLength}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedVariants({
+                                    ...selectedVariants,
+                                    [product.id]: {
+                                      hoseLength: variant.hoseLength,
+                                      hasRotatingBase: true
+                                    }
+                                  });
+                                }}
+                                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all
+                                  ${selectedVariants[product.id]?.hoseLength === variant.hoseLength
+                                    ? 'bg-green-100 text-green-700 ring-2 ring-green-500'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                  }`}
+                              >
+                                {variant.hoseLength}m (forgózsámolyos)
+                              </button>
+                            ))
+                          ) : (
+                            // Normál verzió - standard gombok
+                            Array.from(new Set(product.variants?.map(v => v.hoseLength) || [])).map(hoseLength => {
+                              const variants = product.variants?.filter(v => v.hoseLength === hoseLength) || [];
+                              const isSelected = selectedVariants[product.id]?.hoseLength === hoseLength;
+                              return (
+                                <div key={hoseLength} className="flex flex-col gap-2">
                                   <button
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      const variant = variants.find(v => v.hasRotatingBase);
-                                      if (variant) {
-                                        setSelectedVariants({
-                                          ...selectedVariants,
-                                          [product.id]: {
-                                            hoseLength: variant.hoseLength,
-                                            hasRotatingBase: true
-                                          }
-                                        });
-                                      }
+                                      const variant = variants.find(v => !v.hasRotatingBase) || variants[0];
+                                      setSelectedVariants({
+                                        ...selectedVariants,
+                                        [product.id]: {
+                                          hoseLength: variant.hoseLength,
+                                          hasRotatingBase: variant.hasRotatingBase || false
+                                        }
+                                      });
                                     }}
                                     className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all
-                                      ${isSelected && selectedVariants[product.id]?.hasRotatingBase
+                                      ${isSelected && !selectedVariants[product.id]?.hasRotatingBase
                                         ? 'bg-green-100 text-green-700 ring-2 ring-green-500'
                                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                       }`}
                                   >
-                                    {hoseLength}m (forgózsámolyos)
+                                    {hoseLength}m
                                   </button>
-                                )}
-                              </div>
-                            );
-                          })}
+                                  {variants.some(v => v.hasRotatingBase) && (
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        const variant = variants.find(v => v.hasRotatingBase);
+                                        if (variant) {
+                                          setSelectedVariants({
+                                            ...selectedVariants,
+                                            [product.id]: {
+                                              hoseLength: variant.hoseLength,
+                                              hasRotatingBase: true
+                                            }
+                                          });
+                                        }
+                                      }}
+                                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all
+                                        ${isSelected && selectedVariants[product.id]?.hasRotatingBase
+                                          ? 'bg-green-100 text-green-700 ring-2 ring-green-500'
+                                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                        }`}
+                                    >
+                                      {hoseLength}m (forgózsámolyos)
+                                    </button>
+                                  )}
+                                </div>
+                              );
+                            })
+                          )}
                         </div>
                       </div>
                     )}
@@ -852,9 +908,11 @@ export default function Products() {
                     className="bg-white/10 hover:bg-white/20 rounded-full p-2 backdrop-blur-sm text-white transition-all"
                     onClick={(e) => {
                       e.stopPropagation();
-                      const images = selectedProduct?.variants 
-                        ? selectedProduct.variants[0].images 
-                        : selectedProduct?.images || [];
+                      const selectedVariant = selectedProduct?.variants?.find(v => 
+                        v.hoseLength === selectedVariants[selectedProduct.id]?.hoseLength && 
+                        v.hasRotatingBase === selectedVariants[selectedProduct.id]?.hasRotatingBase
+                      );
+                      const images = selectedVariant?.images || selectedProduct?.variants?.[0].images || selectedProduct?.images || [];
                       handleImageNavigation('prev', images);
                       setSelectedImage(images[currentImageIndex]);
                     }}
@@ -870,9 +928,11 @@ export default function Products() {
                     className="bg-white/10 hover:bg-white/20 rounded-full p-2 backdrop-blur-sm text-white transition-all"
                     onClick={(e) => {
                       e.stopPropagation();
-                      const images = selectedProduct?.variants 
-                        ? selectedProduct.variants[0].images 
-                        : selectedProduct?.images || [];
+                      const selectedVariant = selectedProduct?.variants?.find(v => 
+                        v.hoseLength === selectedVariants[selectedProduct.id]?.hoseLength && 
+                        v.hasRotatingBase === selectedVariants[selectedProduct.id]?.hasRotatingBase
+                      );
+                      const images = selectedVariant?.images || selectedProduct?.variants?.[0].images || selectedProduct?.images || [];
                       handleImageNavigation('next', images);
                       setSelectedImage(images[currentImageIndex]);
                     }}
