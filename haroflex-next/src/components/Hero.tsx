@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -39,31 +41,63 @@ export default function Hero() {
           <p className="text-sm sm:text-base md:text-lg max-w-3xl mx-auto mb-8 animate-fade-in-delay px-4 leading-relaxed">
             Cégünk által tervezett, fejlesztett, és gyártott TURBOJET márkanév alatt futó öntöződobok, amelyekkel igyekszünk ügyfeleink számára a legkézenfekvőbb megoldásokat nyújtani a mezőgazdasági öntözésben.
           </p>
-          <div className="space-y-6">
-            <a
-              href="#products"
-              className="inline-block bg-green-500 hover:bg-green-600 text-white font-semibold text-base md:text-lg py-2 px-6 md:py-2.5 md:px-8 rounded-full 
-                       transition-all duration-300 transform hover:scale-105 animate-fade-in-delay-2"
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center mb-12">
+            <Link
+              href="/termekek"
+              className="group inline-flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 text-sm sm:text-base font-medium text-white bg-gradient-to-r from-green-600 to-teal-600 rounded-full hover:shadow-lg transition-all duration-300 hover:scale-105 hover:from-green-500 hover:to-teal-500"
             >
-              Termékeink
-            </a>
+              Öntözéstechnika
+              <motion.span
+                className="ml-2 text-base"
+                initial={{ y: 0 }}
+                animate={{ y: [-2, 2, -2] }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                💧
+              </motion.span>
+            </Link>
 
-            {/* Értesítés */}
-            <div className="animate-fade-in-delay-3">
-              <div className="mx-auto w-full max-w-lg bg-gradient-to-r from-black/60 to-black/50 backdrop-blur-sm p-3 md:p-4 rounded-lg md:rounded-xl shadow-lg border border-white/10">
-                <div className="flex items-center justify-center mb-1.5">
-                  <div className="relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white/80 animate-bell" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg>
-                    <div className="absolute -top-1 -right-1 h-1.5 w-1.5 bg-white/50 rounded-full animate-ping" />
-                  </div>
+            <a
+              href="https://mobilhazpont.hu"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 text-sm sm:text-base font-medium text-white bg-gradient-to-r from-green-600 to-teal-600 rounded-full hover:shadow-lg transition-all duration-300 hover:scale-105 hover:from-green-500 hover:to-teal-500"
+            >
+              Mobilházak
+              <motion.span
+                className="ml-2 text-base"
+                initial={{ y: 0 }}
+                animate={{ y: [-2, 2, -2] }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                🏠
+              </motion.span>
+            </a>
+          </div>
+
+          {/* Értesítés */}
+          <div className="animate-fade-in-delay-3">
+            <div className="mx-auto w-full max-w-lg bg-gradient-to-r from-black/60 to-black/50 backdrop-blur-sm p-3 md:p-4 rounded-lg md:rounded-xl shadow-lg border border-white/10">
+              <div className="flex items-center justify-center mb-1.5">
+                <div className="relative">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white/80 animate-bell" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                  </svg>
+                  <div className="absolute -top-1 -right-1 h-1.5 w-1.5 bg-white/50 rounded-full animate-ping" />
                 </div>
-                <h2 className="text-sm md:text-base font-semibold text-white/90 mb-1">TISZTELT ÉRDEKLŐDŐK!</h2>
-                <p className="text-xs md:text-sm text-white/70">
-                  A kialakult gazdasági helyzetre való tekintettel árajánlatot kizárólag telefonos egyeztetést követően állítunk ki, jelen árszabási rend visszavonásig érvényes!
-                </p>
               </div>
+              <h2 className="text-sm md:text-base font-semibold text-white/90 mb-1">TISZTELT ÉRDEKLŐDŐK!</h2>
+              <p className="text-xs md:text-sm text-white/70">
+                A kialakult gazdasági helyzetre való tekintettel árajánlatot kizárólag telefonos egyeztetést követően állítunk ki, jelen árszabási rend visszavonásig érvényes!
+              </p>
             </div>
           </div>
         </div>
